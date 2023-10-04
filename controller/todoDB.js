@@ -23,7 +23,7 @@ async function readFile() {
 
 export async function getTodo(req, res) {
   const content = await readFile();
-
+  console.log(content);
   return res.json({
     status: 1,
     msg: 'ok',
@@ -37,17 +37,17 @@ export async function addTodo(req, res) {
   
   if (req.body.action === 'add') {
     console.log('content', content);
-    content.push({
+    content.data.push({
       id: uuid(),
       title: req.body.title,
       compleated: false,
     });
-    bytes = await Bun.write(filePath, JSON.stringify(newContent));
+    bytes = await Bun.write(filePath, JSON.stringify(content));
   }
   return res.json({
     status: bytes > 0 ? 1 : 0,
     msg: bytes > 0 ? 'ok' : 'error in writing',
-    data: content,
+    data: content.data,
   });
 }
 
